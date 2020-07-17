@@ -10,7 +10,36 @@ var ctx = canvas.getContext("2d");
 var imdata = ctx.getImageData(0, 0, c_width, c_height);
 var data = imdata.data;
 
-for (var i=0; i<data.length; i++)
-  data[i] = i % 255;
+function set_pattern() {
+  for (var x=0; x<c_width; x++) {
+    for (var y=0; y<c_height; y++) {
+      var index = 4*(c_width)*y + 4*x;
+      data[index+0] = (32*x+32*y)%256
+      data[index+1] = (32*x+32*y)%256
+      data[index+2] = (32*x+32*y)%256
+      data[index+3] = 255
+    }
+  }
+  ctx.putImageData(imdata, 0, 0)
+}
 
-ctx.putImageData(imdata, 0, 0)
+function set_image(name) {
+  for (var x=0; x<c_width; x++) {
+    for (var y=0; y<c_height; y++) {
+      var index = 4*(c_width)*y + 4*x;
+      data[index+0] = images[name][x][y][0]
+      data[index+1] = images[name][x][y][1]
+      data[index+2] = images[name][x][y][2]
+      data[index+3] = 255
+    }
+  }
+  ctx.putImageData(imdata, 0, 0)
+}
+
+var images = {
+  'baboon': baboon,
+  'space': space,
+  'prince': prince
+}
+
+set_image('baboon')
